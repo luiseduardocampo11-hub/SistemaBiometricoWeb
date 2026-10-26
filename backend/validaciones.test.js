@@ -77,4 +77,31 @@ test("Debe rechazar una asistencia sin documento", () => {
     });
 
     assert.notEqual(resultado, null);
+});test("Debe rechazar un nombre compuesto solo por espacios", () => {
+    const resultado = validarEmpleado({
+        nombre: "   ",
+        documento: "123456789",
+        cargo: "Operario"
+    });
+
+    assert.notEqual(resultado, null);
+});
+
+test("Debe rechazar un documento que no sea texto", () => {
+    const resultado = validarEmpleado({
+        nombre: "Carlos Pérez",
+        documento: 123456789,
+        cargo: "Operario"
+    });
+
+    assert.notEqual(resultado, null);
+});
+
+test("Debe rechazar un tipo de asistencia escrito incorrectamente", () => {
+    const resultado = validarAsistencia({
+        documento: "123456789",
+        tipo: "entrada"
+    });
+
+    assert.notEqual(resultado, null);
 });
