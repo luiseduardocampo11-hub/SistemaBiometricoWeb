@@ -1,0 +1,97 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.encabezado {
+    background: #12304a;
+    color: white;
+    padding: 24px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.encabezado p {
+    margin-bottom: 0;
+    color: #dbeafe;
+}
+
+.salir {
+    color: white;
+    text-decoration: none;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding: 10px 14px;
+}
+
+.principal {
+    width: min(1100px, 90%);
+    margin: 35px auto;
+}
+
+.bienvenida {
+    margin-bottom: 28px;
+}
+
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.tarjeta {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000010;
+}
+
+.tarjeta h3 {
+    margin-top: 0;
+}
+
+.tarjeta a {
+    display: inline-block;
+    background: #1769aa;
+    color: white;
+    text-decoration: none;
+    padding: 11px 14px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.tarjeta span {
+    color: #64748b;
+    font-size: 14px;
+}
+
+#totalEmpleados {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1769aa;
+}
+
+#mensaje {
+    margin-top: 20px;
+}
+
+footer {
+    text-align: center;
+    color: #64748b;
+    padding: 24px;
+}

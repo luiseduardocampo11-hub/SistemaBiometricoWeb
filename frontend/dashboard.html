@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel principal | Sistema Biométrico Facial</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js" defer></script>
+</head>
+<body>
+    <header class="encabezado">
+        <div>
+            <h1>Sistema Biométrico Facial</h1>
+            <p>Panel de administración</p>
+        </div>
+        <a class="salir" href="index.html">Volver al inicio</a>
+    </header>
+
+    <main class="principal">
+        <section class="bienvenida">
+            <h2>Panel principal</h2>
+            <p>Administra los empleados del sistema desde un solo lugar.</p>
+        </section>
+
+        <section class="resumen">
+            <article class="tarjeta">
+                <h3>Empleados registrados</h3>
+                <p id="totalEmpleados">Consultando...</p>
+                <a href="empleados.html">Gestionar empleados</a>
+            </article>
+
+            <article class="tarjeta">
+                <h3>Control de asistencia</h3>
+                <p>Módulo en desarrollo</p>
+                <span>Disponible en una próxima etapa</span>
+            </article>
+
+            <article class="tarjeta">
+                <h3>Reconocimiento facial</h3>
+                <p>Módulo en desarrollo</p>
+                <span>Disponible en una próxima etapa</span>
+            </article>
+        </section>
+
+        <p id="mensaje" role="status"></p>
+    </main>
+
+    <footer>
+        Sistema Biométrico Facial · Versión de desarrollo
+    </footer>
+</body>
+</html>

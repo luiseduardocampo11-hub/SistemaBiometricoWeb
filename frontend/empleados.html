@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de empleados</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="contenedor">
+        <h1>Sistema Biométrico Facial</h1>
+        <h2>Registro de empleados</h2>
+
+        <form id="empleadoForm">
+            <label for="nombre">Nombre completo</label>
+            <input
+                type="text"
+                id="nombre"
+                required
+                maxlength="100"
+                placeholder="Escribe el nombre"
+            >
+
+            <label for="documento">Número de documento</label>
+            <input
+                type="text"
+                id="documento"
+                required
+                maxlength="30"
+                placeholder="Escribe el documento"
+            >
+
+            <label for="cargo">Cargo</label>
+            <input
+                type="text"
+                id="cargo"
+                required
+                maxlength="100"
+                placeholder="Escribe el cargo"
+            >
+
+            <button type="submit">Registrar empleado</button>
+        </form>
+
+        <p id="mensaje" role="status"></p>
+
+        <hr>
+
+        <h2>Empleados registrados</h2>
+        <button type="button" id="btnConsultar">
+            Consultar empleados
+        </button>
+
+        <ul id="listaEmpleados"></ul>
+    </main>
+
+    <script src="empleados.js"></script>
+</body>
+</html>

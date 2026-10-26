@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de cámara | Sistema Biométrico Facial</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header class="encabezado">
+        <div>
+            <h1>Sistema Biométrico Facial</h1>
+            <p>Prueba de cámara web</p>
+        </div>
+        <a class="salir" href="dashboard.html">Volver al panel</a>
+    </header>
+
+    <main class="principal">
+        <section class="tarjeta">
+            <h2>Activar cámara</h2>
+            <p>Autoriza el uso de la cámara para comprobar su funcionamiento.</p>
+
+            <video
+                id="video"
+                autoplay
+                muted
+                playsinline
+                style="width:100%; max-width:640px; background:#111; border-radius:10px;"
+            ></video>
+
+            <p id="estado" role="status">Cámara sin activar.</p>
+
+            <button id="activar" type="button">Activar cámara</button>
+            <button id="detener" type="button">Detener cámara</button>
+        </section>
+    </main>
+
+    <script src="camara.js"></script>
+</body>
+</html>

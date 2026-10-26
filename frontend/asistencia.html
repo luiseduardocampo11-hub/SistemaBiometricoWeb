@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de asistencia</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="asistencia.js" defer></script>
+</head>
+<body>
+    <header class="encabezado">
+        <div>
+            <h1>Sistema Biométrico Facial</h1>
+            <p>Control de asistencia laboral</p>
+        </div>
+        <a class="salir" href="dashboard.html">Volver al panel</a>
+    </header>
+
+    <main class="principal">
+        <section class="tarjeta">
+            <h2>Registrar asistencia</h2>
+
+            <form id="asistenciaForm">
+                <label for="empleado">Seleccionar empleado</label>
+                <select id="empleado" required>
+                    <option value="">Cargando empleados...</option>
+                </select>
+
+                <label for="tipo">Tipo de registro</label>
+                <select id="tipo" required>
+                    <option value="Entrada">Entrada</option>
+                    <option value="Salida">Salida</option>
+                </select>
+
+                <button type="submit">Registrar asistencia</button>
+            </form>
+
+            <p id="mensaje" role="status"></p>
+        </section>
+
+        <section class="tarjeta" style="margin-top: 24px;">
+            <h2>Historial de asistencias</h2>
+            <button type="button" id="btnActualizar">
+                Actualizar historial
+            </button>
+            <ul id="historial"></ul>
+        </section>
+    </main>
+</body>
+</html>

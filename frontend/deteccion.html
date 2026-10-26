@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección facial - Sistema Biométrico</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        .zona-camara {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #video, #lienzo {
+            display: block;
+            width: 100%;
+        }
+
+        #lienzo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .controles {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="encabezado">
+        <div>
+            <h1>Sistema Biométrico Facial</h1>
+            <p>Prueba de detección de rostros</p>
+        </div>
+        <a class="salir" href="dashboard.html">Volver al panel</a>
+    </header>
+
+    <main class="principal">
+        <section class="tarjeta">
+            <h2>Detección facial</h2>
+            <p>Esta prueba detecta la presencia de un rostro.
+               No identifica a la persona ni guarda imágenes.</p>
+
+            <div class="zona-camara">
+                <video id="video" autoplay muted playsinline></video>
+                <canvas id="lienzo"></canvas>
+            </div>
+
+            <p id="estado" role="status">Preparado para iniciar.</p>
+
+            <div class="controles">
+                <button id="iniciar" type="button">
+                    Iniciar detección
+                </button>
+                <button id="detener" type="button">
+                    Detener
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        const video = document.getElementById("video");
+        const lienzo = document.getElementById("lienzo");
+        const contexto = lienzo.getContext("2d");
+        const estado = document.getElementById("estado");
+        const botonIniciar = document.getElementById("iniciar");
+        const botonDetener = document.getElementById("detener");
+
+        let flujoCamara = null;
+        let detector = null;
+        let activo = false;
+        let procesando = false;
+        let ultimoTiempo = -1;
+
+        botonIniciar.addEventListener("click", iniciar);
+        botonDetener.addEventListener("click", detener);
+
+        async function iniciar() {
+            botonIniciar.disabled = true;
+            estado.textContent = "Cargando detector facial...";
+
+            try {
+                const vision = await import(
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs"
+                );
+
+                const archivos = await vision.FilesetResolver.forVisionTasks(
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+                );
+
+                detector = await vision.FaceDetector.createFromOptions(
+                    archivos,
+                    {
+                        baseOptions: {
+                            modelAssetPath:
+                                "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite"
+                        },
+                        runningMode: "VIDEO",
+                        minDetectionConfidence: 0.5
+                    }
+                );
+
+                estado.textContent = "Solicitando permiso para la cámara...";
+
+                flujoCamara = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "user" },
+                    audio: false
+                });
+
+                video.srcObject = flujoCamara;
+                await video.play();
+
+                lienzo.width = video.videoWidth;
+                lienzo.height = video.videoHeight;
+
+                activo = true;
+                estado.textContent = "Cámara activa. Buscando un rostro...";
+                requestAnimationFrame(detectar);
+            } catch (error) {
+                console.error("Error en la detección facial:", error);
+                estado.textContent = "Error: " + error.message;
+                detener();
+            } finally {
+                botonIniciar.disabled = false;
+            }
+        }
+
+        function detectar() {
+            if (!activo || procesando) return;
+
+            if (video.readyState >= 2 &&
+                video.currentTime !== ultimoTiempo) {
+                procesando = true;
+
+                try {
+                    ultimoTiempo = video.currentTime;
+                    const resultado = detector.detectForVideo(
+                        video,
+                        performance.now()
+                    );
+
+                    contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+
+                    const rostros = resultado.detections || [];
+
+                    if (rostros.length > 0) {
+                        estado.textContent =
+                            "Rostro detectado. Cantidad: " + rostros.length;
+
+                        for (const rostro of rostros) {
+                            const caja = rostro.boundingBox;
+                            contexto.strokeStyle = "#00e676";
+                            contexto.lineWidth = 3;
+                            contexto.strokeRect(
+                                caja.originX,
+                                caja.originY,
+                                caja.width,
+                                caja.height
+                            );
+                        }
+                    } else {
+                        estado.textContent = "No se detecta ningún rostro.";
+                    }
+                } catch (error) {
+                    console.error("Error procesando el video:", error);
+                    estado.textContent = "Error al analizar el video: " + error.message;
+                    detener();
+                    return;
+                } finally {
+                    procesando = false;
+                }
+            }
+
+            if (activo) requestAnimationFrame(detectar);
+        }
+
+        function detener() {
+            activo = false;
+
+            if (flujoCamara) {
+                flujoCamara.getTracks().forEach(pista => pista.stop());
+                flujoCamara = null;
+            }
+
+            video.srcObject = null;
+            contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+            estado.textContent = "Detección detenida.";
+
+            if (detector) {
+                detector.close();
+                detector = null;
+            }
+
+            botonIniciar.disabled = false;
+        }
+    </script>
+</body>
+</html>
